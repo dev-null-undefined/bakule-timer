@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>We'are all gonna die</title>
+  <style>
+    body {
+      background: #000;
+      color: #ff5555;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    body.flash {
+      background-color: #220000;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.2em;
+    }
+
+    .stat {
+      font-size: 1.5em;
+      margin: 0.2em 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Konec se blíží</h1>
+  <div class="stat" id="countdown"></div>
+  <div class="stat" id="avg-time"></div>
+
+  <script>
+    const deadline = new Date('2025-05-16T23:59:59');
+    const averageWords = 30000;
+    const wordsWritten = 4200;
+    const wordsLeft = averageWords - wordsWritten;
+
+    let lastMinute = null;
+
+    function flash() {
+      document.body.classList.add('flash');
+      setTimeout(() => {
+        document.body.classList.remove('flash');
+      }, 500);
+    }
+
+    function update() {
+      const now = new Date();
+      let totalSeconds = Math.max(Math.floor((deadline - now) / 1000), 0);
+
+      const days = Math.floor(totalSeconds / 86400);
+      totalSeconds %= 86400;
+      const hours = Math.floor(totalSeconds / 3600);
+      totalSeconds %= 3600;
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      const secPerWord = wordsLeft > 0 ? ((days * 86400 + hours * 3600 + minutes * 60 + seconds) / wordsLeft).toFixed(2) : 0;
+
+      document.getElementById('countdown').textContent =
+        `${days} dnů ${hours} hodin ${minutes} minut ${seconds} sekund do odevzdání.`;
+
+      document.getElementById('avg-time').textContent =
+        `${Math.round(secPerWord)}s na slovo.`;
+
+      if (lastMinute !== null && minutes !== lastMinute) {
+        flash();
+      }
+      lastMinute = minutes;
+    }
+
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>
+
