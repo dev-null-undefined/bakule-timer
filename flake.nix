@@ -27,7 +27,8 @@
         installPhase = ''
           mkdir -p $out/share/bakule-timer
           cp index.html $out/share/bakule-timer/
-          cp stats.php      $out/share/bakule-timer/
+          cp metrics.php $out/share/bakule-timer/
+          cp stats.php $out/share/bakule-timer/
           substituteInPlace $out/share/bakule-timer/stats.php \
             --replace "pdftotext" "${popplerUtils}/bin/pdftotext"
         '';
