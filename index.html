@@ -78,8 +78,9 @@
       lastMinute = minutes;
     }
 
-    function getStatistics() {
-      fetch('stats.php')
+    function getStatistics(useStale = false) {
+      const url = useStale ? 'stats.php?use_stale=1' : 'stats.php';
+      fetch(url)
         .then(response => response.json())
         .then(data => {
           wordsWritten = data.words_written;
@@ -87,6 +88,8 @@
         })
         .catch(error => console.error('Error fetching stats:', error));
     }
+
+    getStatistics(true);
 
     update();
     setInterval(update, 1000);

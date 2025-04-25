@@ -12,7 +12,8 @@ if (!is_dir($cacheDir)) {
 $pdfUrl = 'https://bc.zde.uzdil.cz/main.pdf';
 $pdfCache = $cacheDir . '/main.pdf';
 $cacheJson = $cacheDir . '/stats_cache.json';
-$cacheMaxAge = 60;
+$useStale = isset($_GET['use_stale']) && $_GET['use_stale'] == '1';
+$cacheMaxAge = $useStale ? PHP_INT_MAX : 60;
 
 if (file_exists($cacheJson) && time() - filemtime($cacheJson) < $cacheMaxAge) {
     echo file_get_contents($cacheJson);
