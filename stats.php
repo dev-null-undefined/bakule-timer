@@ -9,7 +9,7 @@ if (!is_dir($cacheDir)) {
     }
 }
 
-$pdfUrl = 'https://bc.zde.uzdil.cz/main.pdf';
+$pdfUrl = '<PDF_URL>';
 $pdfCache = $cacheDir . '/main.pdf';
 $cacheJson = $cacheDir . '/stats_cache.json';
 $useStale = isset($_GET['use_stale']) && $_GET['use_stale'] == '1';
