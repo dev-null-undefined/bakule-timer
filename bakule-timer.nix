@@ -3,6 +3,8 @@
   php,
   poppler_utils,
   pdf_url,
+  domain,
+  author,
 }:
 stdenv.mkDerivation {
   pname = "bakule-timer";
@@ -17,6 +19,9 @@ stdenv.mkDerivation {
     substituteInPlace $out/share/bakule-timer/stats.php \
       --replace "pdftotext" "${poppler_utils}/bin/pdftotext" \
       --replace "<PDF_URL>" "${pdf_url}"
+    substituteInPlace $out/share/bakule-timer/metrics.php \
+      --replace "<DOMAIN>" "${domain}" \
+      --replace "<AUTHOR>" "${author}"
   '';
 
   meta = {

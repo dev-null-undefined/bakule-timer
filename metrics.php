@@ -1,6 +1,6 @@
 <?php
 
-$url = "https://bc.dev-null.me/stats.php";
+$url = "https://<DOMAIN>/stats.php";
 $json = file_get_contents($url);
 if ($json === false) {
     http_response_code(500);
@@ -19,5 +19,5 @@ header('Content-Type: text/plain; version=0.0.4');
 
 echo "# HELP words_written Total number of words written\n";
 echo "# TYPE words_written gauge\n";
-echo 'words_written{author="martin.uzdil"} ' . $data['words_written'] . "\n";
+echo 'words_written{author="<AUTHOR>"} ' . $data['words_written'] . "\n";
 

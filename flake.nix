@@ -14,7 +14,11 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in {
       packages = {
-        bakule-timer-uzdil = pkgs.callPackage ./bakule-timer.nix {pdf_url = "https://bc.zde.uzdil.cz/main.pdf";};
+        bakule-timer-uzdil = pkgs.callPackage ./bakule-timer.nix {
+          pdf_url = "https://bc.zde.uzdil.cz/main.pdf";
+          domain = "bc.dev-null.me";
+          author = "martin.uzdil";
+        };
       };
       defaultPackage = self.packages.${system}.bakule-timer-uzdil;
     });
