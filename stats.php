@@ -1,6 +1,20 @@
 <?php
 header('Content-Type: application/json');
 
+function hostToSlug(string $url): string
+{
+    $host = parse_url($url, PHP_URL_HOST);
+    if (!$host) {
+        return '';
+    }
+    return strtolower(str_replace('.', '-', $host));
+}
+
+
+$pdfUrl = '<PDF_URL>';
+
+$urlSlug = hostToSlug($pdfUrl);
+
 $cacheDir = '/var/cache/bakule-timer';
 if (!is_dir($cacheDir)) {
     $cacheDir = sys_get_temp_dir() . '/bakule-timer';
@@ -9,9 +23,8 @@ if (!is_dir($cacheDir)) {
     }
 }
 
-$pdfUrl = '<PDF_URL>';
-$pdfCache = $cacheDir . '/main.pdf';
-$cacheJson = $cacheDir . '/stats_cache.json';
+$pdfCache = $cacheDir . '/' . $urlSlug . '.pdf';
+$cacheJson = $cacheDir . '/' . $urlSlug . '-stats_cache.json';
 $useStale = isset($_GET['use_stale']) && $_GET['use_stale'] == '1';
 $cacheMaxAge = $useStale ? PHP_INT_MAX : 60;
 
@@ -24,7 +37,7 @@ if (!file_exists($pdfCache) || time() - filemtime($pdfCache) > $cacheMaxAge) {
     @file_put_contents($pdfCache, @fopen($pdfUrl, 'r'));
 }
 
-$tmpTxt = sys_get_temp_dir() . '/' . uniqid('pdf_') . '.txt';
+$tmpTxt = sys_get_temp_dir() . '/' . uniqid($urlSlug . '-pdf_') . '.txt';
 @exec(
     'pdftotext ' . escapeshellarg($pdfCache) . ' ' . escapeshellarg($tmpTxt) . ' 2>/dev/null',
     $out, $rc
